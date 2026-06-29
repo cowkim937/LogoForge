@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LogoForge - Static Logo & Favicon Generator</title>
+    <meta name="description" content="Generate favicons, app icons, PWA manifests, social images, and logo assets from a PNG or SVG entirely in your browser." />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://logoforge.pages.dev/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="LogoForge - Static Logo & Favicon Generator" />
+    <meta property="og:description" content="Create website icons, Apple touch icons, Android icons, PWA files, and social previews without uploading your image to a server." />
+    <meta property="og:url" content="https://logoforge.pages.dev/" />
+    <meta property="og:image" content="/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LogoForge - Static Logo & Favicon Generator" />
+    <meta name="twitter:description" content="Browser-only favicon and logo generator for modern websites." />
+    <meta name="twitter:image" content="/og-image.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "LogoForge",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Any",
+        "description": "A static browser-based logo, favicon, and web icon generator.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+  </head>
+  <body>
+    <a class="visually-hidden-focusable skip-link" href="#main">Skip to main content</a>
+    <header class="app-header border-bottom bg-white">
+      <nav class="navbar navbar-expand-lg" aria-label="Primary navigation">
+        <div class="container">
+          <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="#main" aria-label="LogoForge home">
+            <span class="brand-mark" aria-hidden="true"><i class="bi bi-gem"></i></span>
+            LogoForge
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item"><a class="nav-link" href="#generator">Generator</a></li>
+              <li class="nav-item"><a class="nav-link" href="#how-to-use">How to Use</a></li>
+              <li class="nav-item"><a class="nav-link" href="#privacy">Privacy</a></li>
+              <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="intro-band">
+        <div class="container">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+              <p class="eyebrow">Static logo and favicon generator</p>
+              <h1>Generate every website icon from one image.</h1>
+              <p class="lead">Drop a PNG or SVG, preview the result, then download a ZIP with favicon, Apple, Android, PWA, Microsoft, social, and generic logo assets. Processing stays in your browser.</p>
+            </div>
+            <div class="col-lg-5">
+              <div class="privacy-panel" aria-label="Privacy summary">
+                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                <div>
+                  <strong>No upload. No account. No server.</strong>
+                  <span>Your image is processed locally with Canvas APIs and packaged in the browser.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="generator" class="workspace-band">
+        <div class="container">
+          <div id="alertRegion" class="alert-region" aria-live="polite" aria-atomic="true"></div>
+
+          <div id="dropZone" class="drop-zone" aria-label="Drop, paste, or select a PNG or SVG image">
+            <input id="fileInput" class="hidden-file-input" type="file" accept="image/png,image/svg+xml" aria-hidden="true" tabindex="-1" />
+            <i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>
+            <h2>Drop Image Here</h2>
+            <p>or</p>
+            <button id="selectImageBtn" class="btn btn-primary btn-lg" type="button">
+              <i class="bi bi-image" aria-hidden="true"></i>
+              Select Image
+            </button>
+            <small>PNG, transparent PNG, or SVG up to 30MB. Paste from clipboard is supported.</small>
+          </div>
+
+          <div id="appPanels" class="app-panels d-none">
+            <div class="row g-4">
+              <div class="col-xl-4">
+                <section class="tool-card" aria-labelledby="previewTitle">
+                  <div class="section-heading">
+                    <div>
+                      <p class="eyebrow">Preview</p>
+                      <h2 id="previewTitle">Source Image</h2>
+                    </div>
+                    <button id="replaceImageBtn" class="btn btn-outline-secondary btn-sm" type="button">
+                      <i class="bi bi-arrow-repeat" aria-hidden="true"></i>
+                      Replace
+                    </button>
+                  </div>
+                  <div class="preview-frame checkerboard">
+                    <img id="sourcePreview" alt="Uploaded logo preview" loading="lazy" />
+                  </div>
+                  <dl id="imageMeta" class="meta-grid"></dl>
+                  <div class="tab-simulator mt-3">
+                    <span id="tabFavicon" class="tab-favicon checkerboard"></span>
+                    <span id="tabTitle">LogoForge preview</span>
+                  </div>
+                </section>
+              </div>
+
+              <div class="col-xl-8">
+                <section class="tool-card" aria-labelledby="settingsTitle">
+                  <div class="section-heading">
+                    <div>
+                      <p class="eyebrow">Logo Size Options</p>
+                      <h2 id="settingsTitle">Settings</h2>
+                    </div>
+                    <div class="quality-indicator" id="qualityIndicator">High Quality</div>
+                  </div>
+
+                  <div class="row g-4">
+                    <div class="col-lg-6">
+                      <fieldset>
+                        <legend>Auto Crop</legend>
+                        <div class="option-stack">
+                          <label class="form-check"><input class="form-check-input" type="radio" name="fitMode" value="contain" checked /> <span>Keep original</span></label>
+                          <label class="form-check"><input class="form-check-input" type="radio" name="fitMode" value="center" /> <span>Center align</span></label>
+                          <label class="form-check"><input class="form-check-input" type="radio" name="fitMode" value="cover" /> <span>Square crop</span></label>
+                          <label class="form-check"><input class="form-check-input" id="paddingEnabled" type="checkbox" checked /> <span>Add padding</span></label>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="col-lg-6">
+                      <fieldset>
+                        <legend>Background</legend>
+                        <div class="bg-options" role="radiogroup" aria-label="Background color">
+                          <label><input type="radio" name="backgroundMode" value="transparent" checked /> <span class="swatch transparent"></span> Transparent</label>
+                          <label><input type="radio" name="backgroundMode" value="white" /> <span class="swatch white"></span> White</label>
+                          <label><input type="radio" name="backgroundMode" value="black" /> <span class="swatch black"></span> Black</label>
+                          <label class="custom-color"><input type="radio" name="backgroundMode" value="custom" /> <input id="customColor" type="color" value="#2563eb" aria-label="Custom background color" /> Custom</label>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="col-lg-6">
+                      <fieldset>
+                        <legend>Color to Transparent</legend>
+                        <div class="transparency-tool">
+                          <label class="form-check"><input id="colorToTransparent" class="form-check-input" type="checkbox" /> <span>Make selected color transparent</span></label>
+                          <div class="row g-2 align-items-end">
+                            <div class="col-5">
+                              <label class="form-label" for="transparentColor">Color</label>
+                              <input id="transparentColor" class="form-control form-control-color" type="color" value="#ffffff" />
+                            </div>
+                            <div class="col-7">
+                              <label class="form-label" for="transparentTolerance">Tolerance</label>
+                              <input id="transparentTolerance" class="form-range" type="range" min="0" max="96" value="24" />
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-label" for="qualitySelect">Resize Quality</label>
+                      <select id="qualitySelect" class="form-select">
+                        <option value="fast">Fast</option>
+                        <option value="high" selected>High Quality</option>
+                        <option value="ultra">Ultra Quality</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-label" for="appName">PWA App Name</label>
+                      <input id="appName" class="form-control" type="text" value="LogoForge App" maxlength="60" />
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-label" for="themeColor">Manifest Theme Color</label>
+                      <input id="themeColor" class="form-control form-control-color" type="color" value="#2563eb" />
+                    </div>
+                    <div class="col-lg-6">
+                      <label class="form-label" for="paddingRange">Padding</label>
+                      <input id="paddingRange" class="form-range" type="range" min="0" max="24" value="10" />
+                    </div>
+                  </div>
+
+                  <hr />
+                  <fieldset>
+                    <legend>Extra Features</legend>
+                    <div class="feature-grid">
+                      <label class="form-check"><input id="optimizePng" class="form-check-input" type="checkbox" checked /> <span>PNG optimization</span></label>
+                      <label class="form-check"><input id="includeIco" class="form-check-input" type="checkbox" checked /> <span>ICO generation</span></label>
+                      <label class="form-check"><input id="includeWebp" class="form-check-input" type="checkbox" /> <span>Also generate WEBP</span></label>
+                      <label class="form-check"><input id="includeJpg" class="form-check-input" type="checkbox" /> <span>Also generate JPG</span></label>
+                      <label class="form-check"><input id="autoDownload" class="form-check-input" type="checkbox" /> <span>Auto download ZIP</span></label>
+                      <label class="form-check"><input id="retinaMode" class="form-check-input" type="checkbox" checked /> <span>Retina ready</span></label>
+                      <label class="form-check"><input id="maskableEnabled" class="form-check-input" type="checkbox" checked /> <span>Maskable icons</span></label>
+                    </div>
+                  </fieldset>
+
+                  <div class="action-row">
+                    <button id="generateBtn" class="btn btn-primary btn-lg" type="button">
+                      <i class="bi bi-magic" aria-hidden="true"></i>
+                      Generate
+                    </button>
+                    <button id="downloadBtn" class="btn btn-success btn-lg" type="button" disabled>
+                      <i class="bi bi-file-earmark-zip" aria-hidden="true"></i>
+                      Download ZIP
+                    </button>
+                  </div>
+                  <div id="progressWrap" class="progress d-none" role="progressbar" aria-label="Generation progress" aria-valuemin="0" aria-valuemax="100">
+                    <div id="progressBar" class="progress-bar" style="width: 0%">0%</div>
+                  </div>
+                </section>
+              </div>
+            </div>
+
+            <section id="resultsPanel" class="results-panel d-none" aria-labelledby="resultsTitle">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Generated Preview</p>
+                  <h2 id="resultsTitle">Icons</h2>
+                </div>
+                <div class="view-toggle" aria-label="Preview background">
+                  <button class="btn btn-outline-secondary btn-sm active" type="button" data-preview-bg="light">Light</button>
+                  <button class="btn btn-outline-secondary btn-sm" type="button" data-preview-bg="dark">Dark</button>
+                  <button class="btn btn-outline-secondary btn-sm" type="button" data-safe-zone>Safe Zone</button>
+                </div>
+              </div>
+              <div id="iconGrid" class="icon-grid"></div>
+              <section class="editor-panel" aria-labelledby="editorTitle">
+                <div class="section-heading">
+                  <div>
+                    <p class="eyebrow">Edit Generated Image</p>
+                    <h3 id="editorTitle">Quick Editor</h3>
+                  </div>
+                  <button id="applyEditBtn" class="btn btn-outline-primary" type="button">
+                    <i class="bi bi-check2-square" aria-hidden="true"></i>
+                    Apply to ZIP
+                  </button>
+                </div>
+                <div class="row g-4 align-items-center">
+                  <div class="col-lg-4">
+                    <label class="form-label" for="editFileSelect">Generated PNG</label>
+                    <select id="editFileSelect" class="form-select"></select>
+                    <div class="edit-canvas-wrap checkerboard mt-3">
+                      <canvas id="editCanvas" width="192" height="192" aria-label="Generated image editor preview"></canvas>
+                    </div>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="row g-3">
+                      <div class="col-sm-4">
+                        <label class="form-label" for="editBackground">Background</label>
+                        <select id="editBackground" class="form-select">
+                          <option value="transparent" selected>Transparent</option>
+                          <option value="white">White</option>
+                          <option value="black">Black</option>
+                          <option value="custom">Custom</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-4">
+                        <label class="form-label" for="editCustomColor">Custom Color</label>
+                        <input id="editCustomColor" class="form-control form-control-color" type="color" value="#2563eb" />
+                      </div>
+                      <div class="col-sm-4">
+                        <label class="form-label" for="editOpacity">Opacity</label>
+                        <input id="editOpacity" class="form-range" type="range" min="20" max="100" value="100" />
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label" for="editScale">Scale</label>
+                        <input id="editScale" class="form-range" type="range" min="50" max="120" value="100" />
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label" for="editRotate">Rotate</label>
+                        <input id="editRotate" class="form-range" type="range" min="-180" max="180" value="0" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <div class="row g-4 mt-2">
+                <div class="col-lg-6">
+                  <h3>HTML Code</h3>
+                  <textarea id="htmlCode" class="form-control code-output" rows="8" readonly aria-label="Generated HTML icon code"></textarea>
+                  <button id="copyHtmlBtn" class="btn btn-outline-primary mt-2" type="button">
+                    <i class="bi bi-clipboard" aria-hidden="true"></i>
+                    Copy HTML
+                  </button>
+                </div>
+                <div class="col-lg-6">
+                  <h3>PWA Manifest</h3>
+                  <textarea id="manifestCode" class="form-control code-output" rows="8" readonly aria-label="Generated web app manifest"></textarea>
+                  <button id="copyManifestBtn" class="btn btn-outline-primary mt-2" type="button">
+                    <i class="bi bi-clipboard" aria-hidden="true"></i>
+                    Copy Manifest
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="how-to-use" class="content-band">
+        <div class="container">
+          <h2>How to Use</h2>
+          <div class="row g-3">
+            <div class="col-md-4"><div class="info-card"><strong>1. Upload</strong><span>Select, drop, or paste a PNG or SVG logo.</span></div></div>
+            <div class="col-md-4"><div class="info-card"><strong>2. Adjust</strong><span>Choose crop, padding, background, and quality settings.</span></div></div>
+            <div class="col-md-4"><div class="info-card"><strong>3. Download</strong><span>Generate a browser-created ZIP ready for your site.</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="privacy" class="content-band alt">
+        <div class="container">
+          <h2>Privacy Policy</h2>
+          <p>LogoForge does not collect personal information, require login, store uploaded images, or send image files to a server. All conversion work runs locally in your browser tab. Closing the tab removes the working image data from memory.</p>
+          <h2>Terms of Service</h2>
+          <p>You are responsible for using images you have rights to use. Generated files are provided as-is for website, app, and social media implementation.</p>
+        </div>
+      </section>
+
+      <section id="faq" class="content-band">
+        <div class="container">
+          <h2>FAQ</h2>
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne">Does LogoForge upload my image?</button></h3><div id="faqOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">No. Image processing, resizing, and ZIP generation happen in the browser.</div></div></div>
+            <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo">Can I use transparent PNG files?</button></h3><div id="faqTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes. Transparent PNG and SVG files are supported, and transparent output can be preserved.</div></div></div>
+            <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqThree">What is included in the ZIP?</button></h3><div id="faqThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Favicons, Apple touch icons, Android icons, PWA icons, Microsoft tiles, social images, generic logos, manifest, browserconfig, and README.</div></div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
+        <span>LogoForge</span>
+        <span>Static, browser-only image generation for web teams.</span>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
